@@ -5,10 +5,14 @@
   import Stats from './Stats.svelte';
   import Config from './Config.svelte';
   import About from './About.svelte';
+  import { onMount } from 'svelte';
+  import { connectWS, send } from '$lib/zero';
 
   const isAlpha = true;
 
-  let selectedTab = 0;
+  let serverInfo = $state({});
+
+  let selectedTab = $state(0);
 
   const tabs = [
     {
@@ -36,6 +40,18 @@
       component: About,
     },
   ];
+
+  onMount(() => {
+    connectWS();
+    send({
+      cmd: 'serverInfo',
+      params: {},
+    }, (info) => {
+      console.log(info);
+      console.log(`version is ${info.version}`);
+      serverInfo.version = info.version;
+    });
+  });
 </script>
 
 {#if isAlpha}
@@ -58,6 +74,6 @@
 </div>
 
 <div>
-  <svelte:component this={tabs[selectedTab].component}/>
+  <svelte:component this={tabs[selectedTab].component} {serverInfo} />
 </div>
 

@@ -1,24 +1,18 @@
 <script>
   import { onMount } from 'svelte';
-  import { connectWS, send } from '$lib/zero.ts';
+  import { send } from '$lib/zero';
+
+  let { serverInfo } = $props();
 
   let connections = $state([]);
-  let version = $state(undefined);
 
   onMount(() => {
-    connectWS();
     send({
       cmd: 'connectionList',
       params: {},
     }, (conns) => {
       connections = conns;
       console.log(conns[0]);
-    });
-    send({
-      cmd: 'serverInfo',
-    }, (serverInfo) => {
-      console.log(serverInfo);
-      version = serverInfo.version;
     });
     send({
       cmd: 'msgSubscribe',
@@ -31,7 +25,7 @@
 
 <h1>Stats</h1>
 <h2>Client info</h2>
-<p>version: {version}</p>
+<p>version: {serverInfo.version}</p>
 <h2>Connections</h2>
 <table>
   <tbody>

@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { connectWS, send } from '$lib/zero.ts';
+  import { getSiteDetails, send } from '$lib/zero';
 
   let siteList = $state([]);
   let selectedSite = $state(undefined);
@@ -8,7 +8,6 @@
   const base_ui_addr = 'http://127.0.0.1:43110';
 
   onMount(() => {
-    connectWS();
     send({
       cmd: 'siteList',
       params: {},
@@ -34,6 +33,18 @@
   const formatDate = (timestamp) => {
     return (new Date(timestamp * 1000)).toLocaleDateString();
   };
+
+  const formatSize = (nbytes) => {
+    if (nbytes === 0)
+      return '0';
+    if (nbytes < 1000)
+      return nbytes.toString() + 'B';
+    if (nbytes < 1000*1000)
+      return (nbytes/1000).toFixed(1).toString() + 'K';
+    if (nbytes < 1000*1000*1000)
+      return (nbytes/1000/1000).toFixed(1).toString() + 'M';
+    return (nbytes/1000/1000/1000).toFixed(1).toString() + 'G';
+  };
 </script>
 
 <h1>Sites</h1>
@@ -45,7 +56,18 @@
       <div>
         <button>⭐</button>
         <button>🗑️</button>
-        {formatDate(site.settings.modified)} ~ {site.peers} peers
+        <p>{formatDate(site.settings.modified)} ~ {site.peers} peers</p>
+        <p>details:
+          {#await getSiteDetails(site.address)}
+            ...
+          {:catch error}
+            {error}
+          {:then res}
+            total size {formatSize(res.total_size)}
+            optional size {formatSize(res.optional_size)}
+            owned size {formatSize(res.owned_size)}
+          {/await}
+        </p>
       </div>
     {/if}
   </div>

@@ -37,35 +37,44 @@ export const connectWS = () => {
 };
 
 
-  const onMessage = (e) => {
-    /* console.log(e); */
-    const message = JSON.parse(e.data);
-    const cmd = message.cmd;
-    if (cmd === "response") {
-      if (waiting_cb[message.to] != null) {
-        return waiting_cb[message.to](message.result);
-      } else {
-        console.log("Websocket callback not found:", message);
-      }
-    } else if (cmd === "ping") {
-      /* return response(message.id, "pong"); */
+const onMessage = (e) => {
+  /* console.log(e); */
+  const message = JSON.parse(e.data);
+  const cmd = message.cmd;
+  if (cmd === "response") {
+    if (waiting_cb[message.to] != null) {
+      return waiting_cb[message.to](message.result);
     } else {
-      // err
+      console.log("Websocket callback not found:", message);
     }
-  };
+  } else if (cmd === "ping") {
+    /* return response(message.id, "pong"); */
+  } else {
+    // err
+  }
+};
 
-  const onOpenWebsocket = (e) => {
-    connected = true;
-    console.log('WS open!');
-    const msgs = [...message_queue];
-    for (let msg of msgs) {
-      ws.send(JSON.stringify(msg));
-    }
-    message_queue = [];
-  };
+const onOpenWebsocket = (e) => {
+  connected = true;
+  console.log('WS open!');
+  const msgs = [...message_queue];
+  for (let msg of msgs) {
+    ws.send(JSON.stringify(msg));
+  }
+  message_queue = [];
+  send({
+    cmd: 'serverInfo',
+  }, (info) => {
+    console.log('####\n', info);
+//    Object.assign(serverInfo, info);
+    // for (let key in ['version']) {
+      // serverInfo[key] = info[key];
+    // }
+  });
+};
 
-  const onCloseWebsocket = (e) => {
-    console.log('Connection closed');
+const onCloseWebsocket = (e) => {
+  console.log('Connection closed');
     /* this.wrapperWsInited = false; */
     /* return setTimeout(() => {
      *   if (e && e.code === 1000 && e.wasClean === false) {
@@ -76,7 +85,7 @@ export const connectWS = () => {
      *     return _this.ws_error = _this.notifications.add("connection", "error", "Connection with <b>UiServer Websocket</b> was lost. Reconnecting...");
      *   }
      * }, 1000); */
-  };
+};
 
 
 
@@ -93,4 +102,22 @@ export const send = (message, cb) => {
   if (cb) {
     waiting_cb[message.id] = cb;
   }
+};
+
+export const getSiteDetails = (address) => {
+  return new Promise((resolve, reject) => {
+    send({
+      cmd: 'siteDetails',
+      params: {
+        address
+      }
+    }, (details) => {
+      console.log(details)
+      if (details.error) {
+        reject(details);
+      } else {
+        resolve(details);
+      }
+    });
+  });
 };

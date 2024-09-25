@@ -104,6 +104,17 @@ export const send = (message, cb) => {
   }
 };
 
+export const getServerInfo = () => {
+  return new Promise((resolve, reject) => {
+    send({
+      cmd: 'serverInfo',
+      params: {},
+    }, (info) => {
+      resolve(info);
+    });
+  });
+};
+
 export const getSiteDetails = (address) => {
   return new Promise((resolve, reject) => {
     send({

@@ -22,7 +22,7 @@
     if (selectedSite === site.address) {
       selectedSite = undefined;
     } else {
-      selectedSite = site.address
+      selectedSite = site.address;
     }
   }
 

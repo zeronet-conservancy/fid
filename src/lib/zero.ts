@@ -132,3 +132,38 @@ export const getSiteDetails = (address) => {
     });
   });
 };
+
+export const getSignerList = () => {
+  return new Promise((resolve, reject) => {
+    send({
+      cmd: 'signerList',
+      params: {},
+    }, (users) => {
+      resolve(users);
+    });
+  });
+};
+
+export const readFile = (address, innerPath) => {
+  return new Promise((resolve, reject) => {
+    send({
+      cmd: 'fileRead',
+      params: {
+        address,
+        inner_path: innerPath,
+      },
+    }, (res) => {
+      if (res.error) {
+        reject(res);
+      } else {
+        resolve(res.data);
+      }
+    });
+  });
+};
+
+export const getUserData = (address) => {
+  return readFile(address, 'profile/profile.json').then((data) => {
+    return JSON.parse(data);
+  });
+};

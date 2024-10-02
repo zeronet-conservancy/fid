@@ -2,10 +2,10 @@
   import { onMount } from 'svelte';
   import { getSiteDetails, send } from '$lib/zero';
 
+  let { data } = $props();
+
   let siteList = $state([]);
   let selectedSite = $state(undefined);
-
-  const base_ui_addr = 'http://127.0.0.1:43110';
 
   onMount(() => {
     send({
@@ -51,7 +51,7 @@
 {#each siteList as site}
   <div class="site">
     <button onclick={() => select(site)}>⚙️</button>
-    <a href="{base_ui_addr}/{site.address}">{formatSiteTitle(site)}</a>
+    <a href="{data.baseAddr}/{site.address}">{formatSiteTitle(site)}</a>
     {#if site.address === selectedSite}
       <div>
         <button>⭐</button>

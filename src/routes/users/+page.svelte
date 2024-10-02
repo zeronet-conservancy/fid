@@ -1,19 +1,11 @@
 <script>
-  import { onMount } from 'svelte';
   import { send } from '$lib/zero';
+  import { goto } from '$app/navigation';
 
-  let userList = $state([]);
+  let { data } = $props();
+  let userList = $derived(data.users);
+
   let selectedUser = $state(undefined);
-
-  onMount(() => {
-    send({
-      cmd: 'signerList',
-      params: {},
-    }, (users) => {
-      userList = users;
-    });
-
-  });
 
   const createNewAccount = () => {
     send({
@@ -21,6 +13,7 @@
     }, (result) => {
       console.log(result);
       // TODO: goto profile editing
+      goto(`/users/${result.address}`);
     });
   };
 

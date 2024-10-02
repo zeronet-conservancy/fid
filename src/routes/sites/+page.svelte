@@ -1,22 +1,10 @@
 <script>
-  import { onMount } from 'svelte';
   import { getSiteDetails, send } from '$lib/zero';
+  import { formatSize } from '$lib/util';
 
   let { data } = $props();
 
-  let siteList = $state([]);
   let selectedSite = $state(undefined);
-
-  onMount(() => {
-    send({
-      cmd: 'siteList',
-      params: {},
-    }, (sites) => {
-      siteList = sites;
-      console.log(sites[0]);
-    });
-
-  });
 
   const select = (site) => {
     if (selectedSite === site.address) {
@@ -33,22 +21,10 @@
   const formatDate = (timestamp) => {
     return (new Date(timestamp * 1000)).toLocaleDateString();
   };
-
-  const formatSize = (nbytes) => {
-    if (nbytes === 0)
-      return '0';
-    if (nbytes < 1000)
-      return nbytes.toString() + 'B';
-    if (nbytes < 1000*1000)
-      return (nbytes/1000).toFixed(1).toString() + 'K';
-    if (nbytes < 1000*1000*1000)
-      return (nbytes/1000/1000).toFixed(1).toString() + 'M';
-    return (nbytes/1000/1000/1000).toFixed(1).toString() + 'G';
-  };
 </script>
 
 <h1>Sites</h1>
-{#each siteList as site}
+{#each data.sites as site}
   <div class="site">
     <button onclick={() => select(site)}>⚙️</button>
     <a href="{data.baseAddr}/{site.address}">{formatSiteTitle(site)}</a>

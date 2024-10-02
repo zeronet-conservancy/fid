@@ -144,6 +144,17 @@ export const getSignerList = () => {
   });
 };
 
+export const getSiteList = () => {
+  return new Promise((resolve, reject) => {
+    send({
+      cmd: 'siteList',
+      params: {},
+    }, (sites) => {
+      resolve(sites);
+    });
+  });
+};
+
 export const readFile = (address, innerPath) => {
   return new Promise((resolve, reject) => {
     send({

@@ -11,7 +11,7 @@
 
 <h2>User profile</h2>
 <div>
-  {#if user}
+  {#if user && !user.error}
     <p>@{user.username}</p>
   {:else}
     <p>User has no profile</p>

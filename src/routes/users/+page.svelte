@@ -23,9 +23,11 @@
 <button onclick={createNewAccount}>New account</button>
 <h2>Following</h2>
 
-<h2>Users</h2>
+<h2>Known users</h2>
 {#each userList as user}
   {#if !user.has_content_record || user.has_profile_content}
-    <div>{JSON.stringify(user)}</div>
+    <div class="user">
+      <a href="/users/{user.address}">{user.address}</a>
+    </div>
   {/if}
 {/each}

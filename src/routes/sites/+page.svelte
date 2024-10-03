@@ -1,58 +1,24 @@
 <script>
-  import { getSiteDetails, send } from '$lib/zero';
-  import { formatSize } from '$lib/util';
+  import SiteWidget from '$lib/SiteWidget.svelte';
 
   let { data } = $props();
 
   let selectedSite = $state(undefined);
 
-  const select = (site) => {
-    if (selectedSite === site.address) {
+  const select = (address) => {
+    if (selectedSite === address) {
       selectedSite = undefined;
     } else {
-      selectedSite = site.address;
+      selectedSite = address;
     }
   }
 
-  const formatSiteTitle = (site) => {
-    return site.content?.title ?? site.address;
-  };
-
-  const formatDate = (timestamp) => {
-    return (new Date(timestamp * 1000)).toLocaleDateString();
-  };
+  const isSelected = (address) => {
+    return address === selectedSite;
+  }
 </script>
 
 <h1>Sites</h1>
 {#each data.sites as site}
-  <div class="site">
-    <button onclick={() => select(site)}>⚙️</button>
-    <a href="{data.baseAddr}/{site.address}">{formatSiteTitle(site)}</a>
-    {#if site.address === selectedSite}
-      <div>
-        <button>⭐</button>
-        <button>🗑️</button>
-        <p>{formatDate(site.settings.modified)} ~ {site.peers} peers</p>
-        <p>details:
-          {#await getSiteDetails(site.address)}
-            ...
-          {:catch error}
-            {error}
-          {:then res}
-            total size {formatSize(res.total_size)}
-            optional size {formatSize(res.optional_size)}
-            owned size {formatSize(res.owned_size)}
-          {/await}
-        </p>
-      </div>
-    {/if}
-  </div>
+  <SiteWidget {site} {select} {isSelected} baseAddr={data.baseAddr} />
 {/each}
-
-<style>
-  .site {
-    border: 2px black solid;
-    border-radius: 2px;
-    
-  }
-</style>

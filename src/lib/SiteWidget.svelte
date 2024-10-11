@@ -1,6 +1,6 @@
 <script>
   import { formatSize } from '$lib/util';
-  import { getSiteDetails } from './zero';
+  import { getSiteDetails } from 'znapi';
 
   let { select, isSelected, site, baseAddr } = $props();
 

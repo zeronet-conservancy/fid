@@ -1,4 +1,4 @@
-import { getUserData } from '$lib/zero';
+import { getUserData } from 'znapi';
 
 export const ssr = false;
 

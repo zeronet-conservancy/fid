@@ -1,6 +1,4 @@
 <script>
-  import { } from '$lib/zero';
-
   let { data } = $props();
 
   const isFirstLaunch = true;

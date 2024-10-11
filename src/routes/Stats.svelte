@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { send } from '$lib/zero';
+  import { send } from 'znapi';
 
   let { serverInfo } = $props();
 

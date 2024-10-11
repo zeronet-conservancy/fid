@@ -1,4 +1,4 @@
-import { connectWS, getServerInfo } from '$lib/zero';
+import { connectWS, getServerInfo } from 'znapi';
 
 export const ssr = false;
 

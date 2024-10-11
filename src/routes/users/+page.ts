@@ -1,4 +1,4 @@
-import { getSignerList } from '$lib/zero';
+import { getSignerList } from 'znapi';
 
 export const ssr = false;
 

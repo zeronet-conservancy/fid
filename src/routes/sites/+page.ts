@@ -1,4 +1,4 @@
-import { getSiteList } from '$lib/zero';
+import { getSiteList } from 'znapi';
 
 export const ssr = false;
 

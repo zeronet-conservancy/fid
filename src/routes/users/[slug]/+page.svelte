@@ -13,10 +13,11 @@
 <div>
   {#if user && !user.error}
     <p>@{user.username}</p>
+    <p>{user.name}</p>
   {:else}
     <p>User has no profile</p>
   {/if}
   <p>Address: <a href="{baseAddr}/{address}">{address}</a></p>
-  <p>Used space: {size ?? 0} out of <input type="number" min="0" max="1000000" /></p>
-  <p>Used data: {dataLastWeek ?? 0} out of <input type="number" /></p>
+  <p>Used space: {size ?? '?'} out of {'?'} <button>⚙️</button></p>
+  <p>Used bandwidth last week: {dataLastWeek ?? '?'} out of {'?'} <button>⚙️</button></p>
 </div>

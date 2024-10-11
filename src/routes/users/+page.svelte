@@ -1,5 +1,5 @@
 <script>
-  import { send } from '$lib/zero';
+  import { send } from 'znapi';
   import { goto } from '$app/navigation';
 
   let { data } = $props();

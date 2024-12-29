@@ -1,8 +1,7 @@
 <script>
   import { formatSize } from '$lib/util';
-  import { getSiteDetails } from 'znapi';
 
-  let { select, isSelected, site, baseAddr } = $props();
+  let { select, isSelected, site, baseAddr, znAPI } = $props();
 
   const formatSiteTitle = (site) => {
     return site.content?.title ?? site.address;
@@ -22,7 +21,7 @@
       <button>🗑️</button>
       <p>{formatDate(site.settings.modified)} ~ {site.peers} peers</p>
       <p>details:
-        {#await getSiteDetails(site.address)}
+        {#await znAPI.getSiteDetails(site.address)}
           ...
         {:catch error}
           {error}

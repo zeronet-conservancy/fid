@@ -1,6 +1,7 @@
 <script>
-  import { send } from 'znapi';
   import { goto } from '$app/navigation';
+  import Paginate from './Paginate.svelte';
+  import User from './User.svelte';
 
   let { data } = $props();
   let userList = $derived(data.users);
@@ -24,10 +25,4 @@
 <h2>Following</h2>
 
 <h2>Known users</h2>
-{#each userList as user}
-  {#if !user.has_content_record || user.has_profile_content}
-    <div class="user">
-      <a href="/users/{user.address}">{user.address}</a>
-    </div>
-  {/if}
-{/each}
+<Paginate items={userList} Component={User} />

@@ -1,13 +1,13 @@
-import { connectWS, getServerInfo } from 'znapi';
+import { connect } from 'znapi';
 
 export const ssr = false;
 
 export const load = async () => {
-  connectWS();
-  const serverInfo = await getServerInfo();
-  const baseAddr = 'http://127.0.0.1:43110';
+  const useWS = import.meta.env.MODE === 'development';
+  const znAPI = connect({ useWS });
+  const baseAddr = 'http://127.0.0.1:43110'; // TODO
   return {
-    serverInfo,
+    znAPI,
     baseAddr,
   };
 };

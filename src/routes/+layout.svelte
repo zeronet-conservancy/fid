@@ -18,6 +18,7 @@
   <a href="/sites">Sites</a>
   <a href="/users">Users</a>
   <a href="/config">Config</a>
+  <a href="/limits">Limits</a>
   <a href="/about">About</a>
 </div>
 

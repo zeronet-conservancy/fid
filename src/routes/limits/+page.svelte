@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import Limit from './Limit.svelte';
 
   // getSizeLimitRules
   let { data } = $props();
@@ -43,5 +44,12 @@
 </div>
 
 {#each limitRules as rule}
-  <div>{JSON.stringify(limitRules)}</div>
+  <Limit limit={rule} />
+  <div class="hidden">{JSON.stringify(limitRules)}</div>
 {/each}
+
+<style>
+  .hidden {
+    color: white;
+  }
+</style>

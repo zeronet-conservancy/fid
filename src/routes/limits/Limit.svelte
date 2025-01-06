@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { ZNAPI } from 'znapi/dist/common';
+
   type Limit = {
     limit_id: number,
     address: string,
@@ -11,12 +13,21 @@
 
   interface Props {
     limit: Limit;
+    znAPI: ZNAPI;
   }
-  let { limit }: Props = $props();
+  let { limit, znAPI }: Props = $props();
+
+  const removeRule = () => {
+    if (limit.is_private) {
+      znAPI.removePrivateSizeLimitRule(limit.limit_id);
+    } else {
+      console.warn("Not implemented deleting shared limit rules");
+    }
+  };
 </script>
 
 <span>
-  <button>🗑️</button>
+  <button onclick={removeRule}>🗑️</button>
   {limit.limit_id}:
   {limit.address}
 </span>

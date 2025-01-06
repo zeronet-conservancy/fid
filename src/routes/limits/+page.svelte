@@ -44,7 +44,7 @@
 </div>
 
 {#each limitRules as rule}
-  <Limit limit={rule} />
+  <Limit limit={rule} {znAPI} />
   <div class="hidden">{JSON.stringify(limitRules)}</div>
 {/each}
 

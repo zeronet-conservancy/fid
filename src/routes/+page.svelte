@@ -9,6 +9,7 @@
 
 <h1>Welcome to <code>zeronet-conservancy
   {#await serverInfoPromise}
+    (?)
   {:then serverInfo}
     {serverInfo.version}
   {/await}

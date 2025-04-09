@@ -1,7 +1,17 @@
-<script>
+<script lang="ts">
   import { formatSize } from '$lib/util';
+  import type { ZNAPI } from 'znapi/dist/common';
 
-  let { select, isSelected, site, baseAddr, znAPI } = $props();
+  interface Props {
+    select: (addr: string) => void;
+    isSelected: (addr: string) => boolean;
+    site: any;
+    baseAddr: string;
+    znAPI: ZNAPI;
+  }
+  let { select, isSelected, site, baseAddr, znAPI }: Props = $props();
+
+  let diagnoseResult = $state('');
 
   const formatSiteTitle = (site) => {
     return site.content?.title ?? site.address;
@@ -11,8 +21,10 @@
     return (new Date(timestamp * 1000)).toLocaleDateString();
   };
 
-  const doDiagnose = () => {
-    console.log('diagnose');
+  const doDiagnose = async () => {
+    const res = await znAPI.siteDiagnose(site.address);
+    console.log(res);
+    diagnoseResult = res;
   };
 </script>
 
@@ -37,6 +49,11 @@
           owned size {formatSize(res.owned_size)}
         {/await}
       </p>
+      {#if diagnoseResult !== ''}
+        <p>
+          {JSON.stringify(diagnoseResult)}
+        </p>
+      {/if}
     </div>
   {/if}
 </div>

@@ -10,6 +10,10 @@
   const formatDate = (timestamp) => {
     return (new Date(timestamp * 1000)).toLocaleDateString();
   };
+
+  const doDiagnose = () => {
+    console.log('diagnose');
+  };
 </script>
 
 <div class="site">
@@ -19,6 +23,8 @@
     <div>
       <button>⭐</button>
       <button>🗑️</button>
+      <button onclick={doDiagnose}>diagnose</button>
+      <button>fix</button>
       <p>{formatDate(site.settings.modified)} ~ {site.peers} peers</p>
       <p>details:
         {#await znAPI.getSiteDetails(site.address)}

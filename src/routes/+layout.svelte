@@ -19,6 +19,7 @@
   <a href="/users">Users</a>
   <a href="/config">Config</a>
   <a href="/limits">Limits</a>
+  <a href="/stats">Stats</a>
   <a href="/about">About</a>
 </div>
 

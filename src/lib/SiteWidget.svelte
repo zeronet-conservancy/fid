@@ -1,6 +1,7 @@
 <script lang="ts">
   import { formatSize } from '$lib/util';
   import type { ZNAPI } from 'znapi/dist/common';
+  import SiteDiagnoseResult from './SiteDiagnoseResult.svelte';
 
   interface Props {
     select: (addr: string) => void;
@@ -11,7 +12,7 @@
   }
   let { select, isSelected, site, baseAddr, znAPI }: Props = $props();
 
-  let diagnoseResult = $state('');
+  let diagnoseResult = $state(undefined);
 
   const formatSiteTitle = (site) => {
     return site.content?.title ?? site.address;
@@ -37,6 +38,9 @@
       <button>🗑️</button>
       <button onclick={doDiagnose}>diagnose</button>
       <button>fix</button>
+      {#if diagnoseResult}
+        <SiteDiagnoseResult {diagnoseResult} />
+      {/if}
       <p>{formatDate(site.settings.modified)} ~ {site.peers} peers</p>
       <p>details:
         {#await znAPI.getSiteDetails(site.address)}
@@ -49,11 +53,6 @@
           owned size {formatSize(res.owned_size)}
         {/await}
       </p>
-      {#if diagnoseResult !== ''}
-        <p>
-          {JSON.stringify(diagnoseResult)}
-        </p>
-      {/if}
     </div>
   {/if}
 </div>

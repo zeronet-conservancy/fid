@@ -23,9 +23,11 @@
   };
 
   const doDiagnose = async () => {
-    const res = await znAPI.siteDiagnose(site.address);
-    console.log(res);
-    diagnoseResult = res;
+    diagnoseResult = await znAPI.siteDiagnose(site.address);
+  };
+
+  const doFix = async () => {
+    // await znAPI.siteFixUserPermissions(site.address, ??, )
   };
 </script>
 
@@ -37,7 +39,7 @@
       <button>⭐</button>
       <button>🗑️</button>
       <button onclick={doDiagnose}>diagnose</button>
-      <button>fix</button>
+      <button onclick={doFix}>fix</button>
       {#if diagnoseResult}
         <SiteDiagnoseResult {diagnoseResult} />
       {/if}

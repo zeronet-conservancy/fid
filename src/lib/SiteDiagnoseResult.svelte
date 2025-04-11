@@ -4,15 +4,27 @@
   }
   let { diagnoseResult }: Props = $props();
   const debugAll = false;
+  const badAddresses = $derived(
+    diagnoseResult.contents.map(
+      (content) => content.user_addresses.map(
+        (res) => {
+          return {
+            ...res,
+            inner_path: content.inner_path,
+          };
+        }
+      )
+    ).flat(1)
+  );
 </script>
 
 <div>
-  {#if diagnoseResult.all_ok}
+  {#if diagnoseResult.is_ok}
     <span class="ok">✅OK</span>
   {:else}
     <span class="not-ok">Issues:</span>
     <ul>
-      {#each diagnoseResult.bad_user_permissions as perm}
+      {#each badAddresses as perm}
         <li>{perm.error} {perm.user}</li>
       {/each}
     </ul>
@@ -26,5 +38,6 @@
   .ok {
   }
   .not-ok {
+    background-color: #f335;
   }
 </style>

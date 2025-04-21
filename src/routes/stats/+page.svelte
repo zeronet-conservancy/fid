@@ -17,16 +17,25 @@
     });
   };
 
-  onMount(() => {
-    setInterval(() => {
-      let i = 0;
-      while (i < lastPong.length) {
-        if (++lastPong[i] > 120) {
-          lastPong.shift();
-        } else {
+  const updatePong = () => {
+    let i = 0;
+    while (i < lastPong.length) {
+      if (++lastPong[i] > 120) {
+        lastPong.shift();
+      } else {
           ++i;
-        }
       }
+    }
+  };
+
+  const updateConnections = async () => {
+    connections = await znAPI.remoteConnectionList();
+  };
+
+  onMount(() => {
+    setInterval(async () => {
+      updatePong();
+      await updateConnections();
     }, 1000);
   });
 </script>
@@ -65,7 +74,7 @@
         <td>{connection.direction}</td>
         <td>{connection.address}</td>
         <td>{connection.port_open}</td>
-        <td>{connection.ping?.toFixed(3)}s</td>
+        <td>{connection.ping?.toFixed(3) ?? '??'}s</td>
         <td>{connection.version}</td>
       </tr>
     {/each}

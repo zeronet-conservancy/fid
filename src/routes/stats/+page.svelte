@@ -5,11 +5,37 @@
   let { znAPI } = data;
 
   let connections = $state([]);
+  let lastPong = $state([]);
+  let lastP = $derived(lastPong.length > 0 ? lastPong[lastPong.length-1] : undefined);
+  let pongStyle = $derived(lastPong.length > 0 ? `color: rgb(${20+lastP}, ${220-lastP}, ${20+lastP})` : '');
 
-  const serverInfoPromise = znAPI.getServerInfo()
+  const serverInfoPromise = znAPI.getServerInfo();
+
+  const doPing = () => {
+    znAPI.ping().then((pong) => {
+      lastPong.push(0);
+    });
+  };
+
+  onMount(() => {
+    setInterval(() => {
+      let i = 0;
+      while (i < lastPong.length) {
+        if (++lastPong[i] > 120) {
+          lastPong.shift();
+        } else {
+          ++i;
+        }
+      }
+    }, 1000);
+  });
 </script>
 
 <h1>Stats</h1>
+<button onclick={doPing}>Ping</button>
+{#if lastP !== undefined}
+  <span style={pongStyle}>pong{'!'.repeat(lastPong.length - 1)}</span>
+{/if}
 <h2>Client info</h2>
 <div>
   {#await serverInfoPromise}

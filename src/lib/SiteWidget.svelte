@@ -27,6 +27,13 @@
   };
 
   const doFix = async () => {
+    for (let content of diagnoseResult.contents) {
+      await znAPI.siteFixUserPermissions(
+        site.address,
+        content.inner_path,
+        content.user_addresses.map((res) => res.user),
+      );
+    }
     // await znAPI.siteFixUserPermissions(site.address, ??, )
   };
 </script>

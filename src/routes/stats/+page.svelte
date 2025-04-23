@@ -68,14 +68,15 @@
       <th>ping</th>
       <th>version</th>
     </tr>
-    {#each connections as connection}
+    {#each connections as conn}
       <tr>
-        <td>{connection.id}</td>
-        <td>{connection.direction}</td>
-        <td>{connection.address}</td>
-        <td>{connection.port_open}</td>
-        <td>{connection.ping?.toFixed(3) ?? '??'}s</td>
-        <td>{connection.version}</td>
+        <td><a href="stats/{conn.id}">{conn.id}</a></td>
+        <td>{conn.dir}</td>
+        <td>{conn.address}</td>
+        <td>{conn.port_open}</td>
+        <td>{conn.ping?.toFixed(3) ?? '??'}s</td>
+        <td>{conn.version}</td>
+        <td>{conn.num_sites}</td>
       </tr>
     {/each}
   </tbody>

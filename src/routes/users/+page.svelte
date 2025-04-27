@@ -4,7 +4,8 @@
   import User from './User.svelte';
 
   let { data } = $props();
-  let userList = $derived(data.users);
+  let { znAPI } = data;
+  const usersPromise = znAPI.getSignerList();
 
   let selectedUser = $state(undefined);
 
@@ -25,4 +26,8 @@
 <h2>Following</h2>
 
 <h2>Known users</h2>
-<Paginate items={userList} Component={User} />
+{#await usersPromise}
+  (loading)
+{:then users}
+  <Paginate items={users} Component={User} />
+{/await}

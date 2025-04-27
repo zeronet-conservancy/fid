@@ -1,6 +1,6 @@
 <script>
   import { goto } from '$app/navigation';
-  import Paginate from './Paginate.svelte';
+  import Paginate from '$lib/Paginate.svelte';
   import User from './User.svelte';
 
   let { data } = $props();

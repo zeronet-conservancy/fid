@@ -12,15 +12,15 @@
     Component,
   }: Props<unknown> = $props();
   const pageSize = 100;
-  let pageN = $state(0);
+  let pageN = $state(1);
   let pageCount = $derived(Math.ceil(items.length / pageSize));
   let sortReverseSign = $derived(sortReverse ? -1 : 1);
   let sortedItems = $derived(sortBy ? items.slice().sort((a, b) => sortReverseSign * sortBy(a, b)) : items);
-  let itemsPage = $derived(sortedItems.slice(pageN*pageSize, (pageN+1)*pageSize));
+  let itemsPage = $derived(sortedItems.slice((pageN-1)*pageSize, pageN*pageSize));
 </script>
 
 <div>
-  <input type="number" bind:value={pageN} /> of {pageCount}
+  <input type="number" bind:value={pageN} min="1" max={pageCount} /> of {pageCount}
   <ul>
     {#each itemsPage as item}
       <Component {...item} />

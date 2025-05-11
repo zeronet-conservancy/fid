@@ -2,6 +2,7 @@
   import { formatSize } from '$lib/util';
   import type { ZNAPI } from 'znapi/dist/common';
   import SiteDiagnoseResult from './SiteDiagnoseResult.svelte';
+  import { onMount } from 'svelte';
 
   interface Props {
     select: (addr: string) => void;
@@ -12,7 +13,13 @@
   }
   let { select, isSelected, site, baseAddr, znAPI }: Props = $props();
 
+  const siteDetailsPromise = znAPI.getSiteDetails(site.address);
+  let siteDetails = $state(undefined);
   let diagnoseResult = $state(undefined);
+
+  onMount(async () => {
+    siteDetails = await siteDetailsPromise;
+  });
 
   const formatSiteTitle = (site) => {
     return site.content?.title ?? site.address;
@@ -34,8 +41,20 @@
         content.user_addresses.map((res) => res.user),
       );
     }
-    // await znAPI.siteFixUserPermissions(site.address, ??, )
   };
+
+  const doFavorite = async () => {
+    siteDetails = await siteDetailsPromise;
+    if (siteDetails.favorite) {
+      await znAPI.siteUnfavorite(site.address);
+      siteDetails.favorite = false;
+    } else {
+      await znAPI.siteFavorite(site.address);
+      siteDetails.favorite = true;
+    }
+  };
+
+  let favStyle = $derived(siteDetails.favorite ? "" : "filter: grayscale(100%)");
 </script>
 
 <div class="site">
@@ -43,16 +62,16 @@
   <a href="{baseAddr}/{site.address}">{formatSiteTitle(site)}</a>
   {#if isSelected(site.address)}
     <div>
-      <button>⭐</button>
+      <button onclick={doFavorite} style={favStyle}>⭐</button>
       <button>🗑️</button>
       <button onclick={doDiagnose}>diagnose</button>
-      <button onclick={doFix}>fix</button>
+      <!-- <button onclick={doFix}>fix</button> -->
       {#if diagnoseResult}
         <SiteDiagnoseResult {diagnoseResult} />
       {/if}
       <p>{formatDate(site.settings.modified)} ~ {site.peers} peers</p>
       <p>details:
-        {#await znAPI.getSiteDetails(site.address)}
+        {#await siteDetailsPromise}
           ...
         {:catch error}
           {error}

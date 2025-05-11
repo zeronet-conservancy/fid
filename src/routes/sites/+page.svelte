@@ -1,12 +1,11 @@
 <script>
   import SiteWidget from '$lib/SiteWidget.svelte';
-  import { onMount } from 'svelte';
 
   let { data } = $props();
   let { znAPI } = data;
 
   let selectedSite = $state(undefined);
-  let sitesPromise = $state(undefined);
+  const sitesPromise = znAPI.getSiteList();
 
   const select = (address) => {
     if (selectedSite === address) {
@@ -19,10 +18,6 @@
   const isSelected = (address) => {
     return address === selectedSite;
   }
-
-  onMount(() => {
-    sitesPromise = znAPI.getSiteList();
-  });
 </script>
 
 <h1>Sites</h1>

@@ -43,10 +43,11 @@
   <button onclick={addNewPrivateLimit}>Add</button>
 </div>
 
-{#each limitRules as rule}
-  <Limit limit={rule} {znAPI} />
-  <div class="hidden">{JSON.stringify(limitRules)}</div>
-{/each}
+<ul>
+  {#each limitRules as rule}
+    <li><Limit limit={rule} {znAPI} /></li>
+  {/each}
+</ul>
 
 <style>
   .hidden {

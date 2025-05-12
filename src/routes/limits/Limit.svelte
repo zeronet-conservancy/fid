@@ -30,4 +30,6 @@
   <button onclick={removeRule}>🗑️</button>
   {limit.limit_id}:
   {limit.address}
+  {limit.rule} {limit.value}
+  @ {limit.source} {limit.priority}
 </span>

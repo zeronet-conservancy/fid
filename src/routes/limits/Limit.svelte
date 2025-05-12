@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ZNAPI } from 'znapi/dist/common';
 
+  // TODO: move to library
   type Limit = {
     limit_id: number,
     address: string,
@@ -24,10 +25,12 @@
       console.warn("Not implemented deleting shared limit rules");
     }
   };
+
+  let removeButtonStyle = $derived(limit.is_private ? '' : 'filter: grayscale(100%)');
 </script>
 
 <span>
-  <button onclick={removeRule}>🗑️</button>
+  <button onclick={removeRule} style={removeButtonStyle} disabled={!limit.is_private}>🗑️</button>
   {limit.limit_id}:
   {limit.address}
   {limit.rule} {limit.value}

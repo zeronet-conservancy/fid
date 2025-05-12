@@ -5,7 +5,7 @@
 </script>
 
 {#if isAlpha}
-  <p>UNDER CONSTRUCTION</p>
+  <div class="under-construction">🏗️🚧UNDER CONSTRUCTION🚧</div>
 {/if}
 
 <h2>User</h2>
@@ -20,7 +20,17 @@
   <a href="/config">Config</a>
   <a href="/limits">Limits</a>
   <a href="/stats">Stats</a>
+  <a href="/debug">Debug</a>
   <a href="/about">About</a>
 </div>
 
 {@render children()}
+
+<style>
+  .under-construction {
+    font-size: 24pt;
+    text-align: center;
+    background-color: #222;
+    color: #f22;
+  }
+</style>

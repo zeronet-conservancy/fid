@@ -5,7 +5,6 @@
   let { data } = $props();
   let { znAPI } = data;
 
-  let selectedSite = $state(undefined);
   const sitesPromise = znAPI.getSiteList();
   let sites = $state(undefined);
   onMount(async () => {
@@ -20,26 +19,14 @@
 
   let sitesFav = $derived(sites?.error ? [] :
                           sites?.filter((site) => site.settings.favorite) ?? []);
-
-  const select = (address) => {
-    if (selectedSite === address) {
-      selectedSite = undefined;
-    } else {
-      selectedSite = address;
-    }
-  }
-
-  const isSelected = (address) => {
-    return address === selectedSite;
-  }
 </script>
 
 <h1>Sites</h1>
 <h2>Favorite</h2>
 {#each sitesFav as site}
-  <SiteWidget {znAPI} {site} {select} {isSelected} baseAddr={data.baseAddr} />
+  <SiteWidget {znAPI} {site} baseAddr={data.baseAddr} />
 {/each}
-<h2>Other</h2>
+<h2>All</h2>
 {#if sites === undefined}
   (loading)
 {:else if sites === []}
@@ -48,6 +35,6 @@
   {sites.error}
 {:else}
   {#each sites as site}
-    <SiteWidget {znAPI} {site} {select} {isSelected} baseAddr={data.baseAddr} />
+    <SiteWidget {znAPI} {site} baseAddr={data.baseAddr} />
   {/each}
 {/if}

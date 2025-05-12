@@ -5,17 +5,20 @@
   import { onMount } from 'svelte';
 
   interface Props {
-    select: (addr: string) => void;
-    isSelected: (addr: string) => boolean;
     site: any;
     baseAddr: string;
     znAPI: ZNAPI;
   }
-  let { select, isSelected, site, baseAddr, znAPI }: Props = $props();
+  let { site, baseAddr, znAPI }: Props = $props();
 
   const siteDetailsPromise = znAPI.getSiteDetails(site.address);
   let siteDetails = $state(undefined);
   let diagnoseResult = $state(undefined);
+
+  let isSelected = $state(false);
+  const flipSelect = () => {
+    isSelected = !isSelected;
+  };
 
   onMount(async () => {
     siteDetails = await siteDetailsPromise;
@@ -82,9 +85,9 @@
 </script>
 
 <div class="site">
-  <button onclick={() => select(site.address)}>⚙️</button>
+  <button onclick={() => flipSelect(site.address)}>⚙️</button>
   <a href="{baseAddr}/{site.address}">{formatSiteTitle(site)}</a>
-  {#if isSelected(site.address)}
+  {#if isSelected}
     <div>
       <button onclick={doFavorite} style={favStyle}>⭐</button>
       <button>🗑️</button>

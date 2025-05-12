@@ -44,17 +44,41 @@
   };
 
   const doFavorite = async () => {
-    siteDetails = await siteDetailsPromise;
-    if (siteDetails.favorite) {
+    if (site.settings.favorite) {
       await znAPI.siteUnfavorite(site.address);
-      siteDetails.favorite = false;
+      site.settings.favorite = false;
     } else {
       await znAPI.siteFavorite(site.address);
-      siteDetails.favorite = true;
+      site.settings.favorite = true;
     }
   };
 
-  let favStyle = $derived(siteDetails.favorite ? "" : "filter: grayscale(100%)");
+  const doFlipUseForLimits = async () => {
+    if (useForLimits) {
+      await znAPI.siteLimitsUnsubscribe(site.address);
+      useForLimitsPriority = undefined;
+      site.settings.use_limit_priority = undefined;
+    } else {
+      setPriority(inputPriority);
+    }
+  };
+
+  const setPriority = async (priority: number) => {
+    await znAPI.siteLimitsSubscribe(site.address, inputPriority);
+    useForLimitsPriority = inputPriority;
+    site.settings.use_limit_priority = inputPriority;
+  };
+
+  let useForLimitsPriority = $state(site.settings.use_limit_priority);
+  let useForLimits = $derived(typeof useForLimitsPriority === 'number');
+  let useForLimitsStyle = $derived(useForLimits ? "" : "filter: grayscale(100%)");
+  let inputPriority = $state(useForLimitsPriority ?? 0);
+
+  const onInput = async (ev) => {
+    await setPriority(inputPriority);
+  };
+
+  let favStyle = $derived(site.settings.favorite ? "" : "filter: grayscale(100%)");
 </script>
 
 <div class="site">
@@ -69,6 +93,13 @@
       {#if diagnoseResult}
         <SiteDiagnoseResult {diagnoseResult} />
       {/if}
+      <p>
+        <button style={useForLimitsStyle} onclick={doFlipUseForLimits}>✅</button>
+        Use as source for user limits
+        {#if useForLimits}
+          wwith priority <input type="number" bind:value={inputPriority} onchange={onInput} />
+        {/if}
+      </p>
       <p>{formatDate(site.settings.modified)} ~ {site.peers} peers</p>
       <p>details:
         {#await siteDetailsPromise}

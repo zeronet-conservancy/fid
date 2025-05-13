@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { formatSize } from '$lib/util';
   import type { ZNAPI } from 'znapi/dist/common';
 
   // TODO: move to library
@@ -33,6 +34,6 @@
   <button onclick={removeRule} style={removeButtonStyle} disabled={!limit.is_private}>🗑️</button>
   {limit.limit_id}:
   {limit.address}
-  {limit.rule} {limit.value}
+  {limit.rule} {formatSize(limit.value)}
   @ {limit.source} {limit.priority}
 </span>

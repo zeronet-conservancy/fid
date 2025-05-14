@@ -9,3 +9,12 @@ export const formatSize = (nbytes) => {
     return (nbytes/1000/1000).toFixed(1).toString() + 'M';
   return (nbytes/1000/1000/1000).toFixed(1).toString() + 'G';
 };
+
+export const abbrev = (s: string, n?: number): string => {
+  const resN = Math.max(4, n ?? 10);
+  if (resN >= s.length)
+    return s;
+  const left = Math.ceil((resN - 2) / 2);
+  const right = s.length - Math.floor((resN - 2) / 2);
+  return s.slice(0, left) + '..' + s.slice(right);
+};

@@ -1,4 +1,4 @@
-export const formatSize = (nbytes) => {
+export const formatSize = (nbytes: number): string => {
   if (nbytes === 0)
     return '0';
   if (nbytes < 1000)
@@ -18,3 +18,10 @@ export const abbrev = (s: string, n?: number): string => {
   const right = s.length - Math.floor((resN - 2) / 2);
   return s.slice(0, left) + '..' + s.slice(right);
 };
+
+export const sanitizeName = (s: string): string => {
+  if (s === "") {
+    return "<empty>";
+  }
+  return s;
+}

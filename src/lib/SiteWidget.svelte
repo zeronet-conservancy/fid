@@ -85,7 +85,7 @@
 </script>
 
 <div class="site">
-  <button onclick={() => flipSelect(site.address)}>⚙️</button>
+  <button onclick={() => flipSelect()}>⚙️</button>
   <a href="{baseAddr}/{site.address}">{formatSiteTitle(site)}</a>
   {#if isSelected}
     <div>
@@ -96,6 +96,7 @@
       {#if diagnoseResult}
         <SiteDiagnoseResult {diagnoseResult} />
       {/if}
+      <a href="/sites/{site.address}">more details..</a>
       <p>
         <button style={useForLimitsStyle} onclick={doFlipUseForLimits}>✅</button>
         Use as source for user limits

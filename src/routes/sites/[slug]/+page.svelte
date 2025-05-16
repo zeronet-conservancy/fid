@@ -15,3 +15,11 @@
 <h1>Site details</h1>
 <h2>{sanitizeName(siteDetails?.title ?? "")}</h2>
 <div>Address: <a href="{baseAddr}/{address}">{address}</a></div>
+<div>
+  Permissions:
+  <ul>
+    {#each siteDetails?.permissions ?? [] as permission}
+      <li>{permission}</li>
+    {/each}
+  </ul>
+</div>

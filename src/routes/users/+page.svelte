@@ -7,8 +7,6 @@
   let { znAPI } = data;
   const usersPromise = znAPI.getSignerList();
 
-  let selectedUser = $state(undefined);
-
   const createNewAccount = () => {
     // TODO
     send({

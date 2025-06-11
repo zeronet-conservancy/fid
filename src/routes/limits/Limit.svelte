@@ -7,6 +7,7 @@
     limit_id: number,
     address: string,
     source: string,
+    inner_path: string,
     is_private: number,
     rule: string,
     value: number,
@@ -27,11 +28,17 @@
     }
   };
 
+  const copyRule = () => {
+    znAPI.addPrivateSizeLimitRule(limit.address, limit.rule, limit.value, limit.priority);
+  };
+
   let removeButtonStyle = $derived(limit.is_private ? '' : 'filter: grayscale(100%)');
+  let copyRuleStyle = $derived(!limit.is_private ? '' : 'filter: grayscale(100%)');
 </script>
 
 <span>
   <button onclick={removeRule} style={removeButtonStyle} disabled={!limit.is_private}>🗑️</button>
+  <button onclick={copyRule} style={copyRuleStyle} disabled={limit.is_private}>📑</button>
   {limit.limit_id}:
   <a href="/users/{limit.address}">{abbrev(limit.address)}</a>
   {limit.rule} {formatSize(limit.value)}

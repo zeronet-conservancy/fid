@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { JSONEditor } from 'svelte-jsoneditor';
 
   let { data } = $props();
   let { znAPI } = data;
@@ -22,7 +23,7 @@
 <div>
   {#each messages.slice().reverse() as message}
     <div>
-      {JSON.stringify(message)}
+      <JSONEditor content={{json: message}} />
     </div>
   {/each}
 </div>

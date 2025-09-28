@@ -20,5 +20,8 @@
     "vite": "^6.0.6",
     "znapi": "latest"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "svelte-jsoneditor": "^3.10.0"
+  }
 }

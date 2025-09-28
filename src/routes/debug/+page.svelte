@@ -9,7 +9,9 @@
   onMount(() => {
     znAPI.msgSubscribe(
       (message) => {
-        messages.push(message);
+        if (message.cmd === 'newMessage') {
+          messages.push(message.params);
+        }
       }
     );
   });

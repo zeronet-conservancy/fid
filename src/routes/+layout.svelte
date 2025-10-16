@@ -1,12 +1,25 @@
 <script>
-  let { children } = $props();
- 
+  let { children, data } = $props();
+  let { znAPI } = data;
+
   const isAlpha = true;
+
+  let isConnected = $state(false);
+
+  znAPI.triggerOnConnected(() => {
+    isConnected = true;
+  });
+
+  znAPI.triggerOnDisconnected(() => {
+    isConnected = false;
+  });
 </script>
 
 {#if isAlpha}
   <div class="under-construction">🏗️🚧UNDER CONSTRUCTION🚧</div>
 {/if}
+
+<h3>status: {isConnected ? "ok" : "disconnected"}</h3>
 
 <h2>User</h2>
 <p>

@@ -1,11 +1,23 @@
 <script>
   import { goto } from '$app/navigation';
   import Paginate from '$lib/Paginate.svelte';
+  import { onMount } from 'svelte';
   import User from './User.svelte';
 
   let { data } = $props();
   let { znAPI } = data;
-  const usersPromise = znAPI.getSignerList();
+
+  let users = $state(undefined);
+
+  onMount(async () => {
+    try {
+      users = await znAPI.getSignerList();
+    } catch (error) {
+      users = {
+        error,
+      };
+    }
+  });
 
   const createNewAccount = () => {
     // TODO
@@ -43,8 +55,12 @@
   {/each}
   <button onclick={() => sortReverse = !sortReverse}>reverse</button>
 </div>
-{#await usersPromise}
+{#if users === undefined}
   (loading)
-{:then users}
+{:else if users === []}
+  (no known users!)
+{:else if users.error}
+  {users.error}
+{:else}
   <Paginate items={users} {sortBy} {sortReverse} Component={User} />
-{/await}
+{/if}
